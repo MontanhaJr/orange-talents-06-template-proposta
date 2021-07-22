@@ -53,7 +53,11 @@ public class PropostaRequest {
     public PropostaRequest() {
     }
 
-    public PropostaRequest(String email, String nome, String documento, String endereco, Double salario) {
+    public PropostaRequest(@NotNull @NotBlank @Email String email,
+                           @NotNull @NotBlank String nome,
+                           @NotNull @NotBlank String documento,
+                           @NotNull @NotBlank String endereco,
+                           @NotNull @Positive Double salario) {
         this.email = email;
         this.nome = nome;
         this.documento = documento;
@@ -62,6 +66,6 @@ public class PropostaRequest {
     }
 
     public Proposta toModel() {
-        return new Proposta(this.id, this.documento, this.email, this.documento, this.endereco, this.salario);
+        return new Proposta(this.email, this.nome, this.documento, this.endereco, this.salario);
     }
 }

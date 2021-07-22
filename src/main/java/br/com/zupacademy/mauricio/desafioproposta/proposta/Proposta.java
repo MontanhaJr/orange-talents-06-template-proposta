@@ -1,7 +1,9 @@
 package br.com.zupacademy.mauricio.desafioproposta.proposta;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Entity
@@ -26,8 +28,11 @@ public class Proposta {
     public Proposta() {
     }
 
-    public Proposta(Long id, String email, String nome, String documento, String endereco, Double salario) {
-        this.id = id;
+    public Proposta(@NotBlank String email,
+                    @NotBlank String nome,
+                    @NotBlank String documento,
+                    @NotBlank String endereco,
+                    @NotBlank @Positive Double salario) {
         this.email = email;
         this.nome = nome;
         this.documento = documento;
