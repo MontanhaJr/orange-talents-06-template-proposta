@@ -1,9 +1,10 @@
 package br.com.zupacademy.mauricio.desafioproposta.proposta;
 
+import br.com.zupacademy.mauricio.desafioproposta.feign.solicitacaoAnalise.AnaliseFinanceiraResponse;
+import br.com.zupacademy.mauricio.desafioproposta.feign.solicitacaoAnalise.StatusAnaliseFinanceira;
+
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Entity
@@ -23,6 +24,7 @@ public class Proposta {
     private String endereco;
     @Column(nullable = false) @Positive
     private Double salario;
+    private String statusAnaliseFinanceira;
 
     @Deprecated
     public Proposta() {
@@ -42,5 +44,13 @@ public class Proposta {
 
     public Long getId() {
         return id;
+    }
+
+    public void defineComoElegivel() {
+        this.statusAnaliseFinanceira = StatusAnaliseFinanceira.ELEGIVEL.name();
+    }
+
+    public void defineComoNaoElegivel() {
+        this.statusAnaliseFinanceira = StatusAnaliseFinanceira.NAO_ELEGIVEL.name();
     }
 }
