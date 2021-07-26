@@ -1,11 +1,8 @@
-package br.com.zupacademy.mauricio.desafioproposta.proposta.dto.request;
+package br.com.zupacademy.mauricio.desafioproposta.propostas.dto.request;
 
-import br.com.zupacademy.mauricio.desafioproposta.proposta.Proposta;
+import br.com.zupacademy.mauricio.desafioproposta.propostas.Proposta;
 import br.com.zupacademy.mauricio.desafioproposta.validation.annotation.document.DocumentValidator;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

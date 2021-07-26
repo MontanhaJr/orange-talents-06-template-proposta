@@ -1,6 +1,5 @@
-package br.com.zupacademy.mauricio.desafioproposta.proposta;
+package br.com.zupacademy.mauricio.desafioproposta.propostas;
 
-import br.com.zupacademy.mauricio.desafioproposta.feign.solicitacaoAnalise.AnaliseFinanceiraResponse;
 import br.com.zupacademy.mauricio.desafioproposta.feign.solicitacaoAnalise.StatusAnaliseFinanceira;
 
 import javax.persistence.*;
@@ -25,6 +24,7 @@ public class Proposta {
     @Column(nullable = false) @Positive
     private Double salario;
     private String statusAnaliseFinanceira;
+    private String idCartao;
 
     @Deprecated
     public Proposta() {
@@ -46,11 +46,23 @@ public class Proposta {
         return id;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
     public void defineComoElegivel() {
         this.statusAnaliseFinanceira = StatusAnaliseFinanceira.ELEGIVEL.name();
     }
 
     public void defineComoNaoElegivel() {
         this.statusAnaliseFinanceira = StatusAnaliseFinanceira.NAO_ELEGIVEL.name();
+    }
+
+    public void associaCartao(String id) {
+        this.idCartao = id;
     }
 }

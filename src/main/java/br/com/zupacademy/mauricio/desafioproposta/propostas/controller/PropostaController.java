@@ -1,11 +1,11 @@
-package br.com.zupacademy.mauricio.desafioproposta.proposta.controller;
+package br.com.zupacademy.mauricio.desafioproposta.propostas.controller;
 
 import br.com.zupacademy.mauricio.desafioproposta.feign.solicitacaoAnalise.AnaliseFinanceiraClient;
 import br.com.zupacademy.mauricio.desafioproposta.feign.solicitacaoAnalise.AnaliseFinanceiraRequest;
-import br.com.zupacademy.mauricio.desafioproposta.feign.solicitacaoAnalise.AnaliseFinanceiraResponse;
-import br.com.zupacademy.mauricio.desafioproposta.proposta.Proposta;
-import br.com.zupacademy.mauricio.desafioproposta.proposta.dto.request.PropostaRequest;
-import br.com.zupacademy.mauricio.desafioproposta.proposta.repository.PropostaRepository;
+import br.com.zupacademy.mauricio.desafioproposta.propostas.Proposta;
+import br.com.zupacademy.mauricio.desafioproposta.propostas.dto.request.PropostaRequest;
+import br.com.zupacademy.mauricio.desafioproposta.propostas.dto.response.PropostaResponse;
+import br.com.zupacademy.mauricio.desafioproposta.propostas.repository.PropostaRepository;
 import br.com.zupacademy.mauricio.desafioproposta.validation.ErroDeFormularioDto;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +53,6 @@ public class PropostaController {
         return ResponseEntity.created(uriBuilder.path("/propostas/{id}")
                 .buildAndExpand(proposta.getId())
                 .toUri())
-                .body(proposta);
+                .body(new PropostaResponse(proposta.getId()));
     }
 }
