@@ -10,10 +10,7 @@ import br.com.zupacademy.mauricio.desafioproposta.validation.ErroDeFormularioDto
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
@@ -32,7 +29,7 @@ public class PropostaController {
 
     @PostMapping("/proposta")
     @Transactional
-    public ResponseEntity<?> criar (@RequestBody @Valid PropostaRequest propostaRequest, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<?> criar(@RequestBody @Valid PropostaRequest propostaRequest, UriComponentsBuilder uriBuilder) {
         Optional<Proposta> documentoJaCadastrado = propostaRepository.findByDocumento(propostaRequest.getDocumento());
 
         if(documentoJaCadastrado.isPresent()) {
@@ -53,6 +50,16 @@ public class PropostaController {
         return ResponseEntity.created(uriBuilder.path("/propostas/{id}")
                 .buildAndExpand(proposta.getId())
                 .toUri())
-                .body(new PropostaResponse(proposta.getId()));
+                .body(proposta.getId());
+    }
+
+    @GetMapping("/proposta/{id}")
+    public ResponseEntity<?> buscarPropostaPorId(@PathVariable Long id) {
+        Optional<Proposta> proposta = propostaRepository.findById(id);
+        if (proposta.isPresent()) {
+            return ResponseEntity.ok(new PropostaResponse(proposta.get()));
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }

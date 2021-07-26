@@ -54,6 +54,22 @@ public class Proposta {
         return documento;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public Double getSalario() {
+        return salario;
+    }
+
+    public String getStatusAnaliseFinanceira() {
+        return statusAnaliseFinanceira;
+    }
+
     public void defineComoElegivel() {
         this.statusAnaliseFinanceira = StatusAnaliseFinanceira.ELEGIVEL.name();
     }
