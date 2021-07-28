@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     Optional<Proposta> findByDocumento(String documento);
 
-    List<Proposta> findByStatusAnaliseFinanceiraAndIdCartaoIsNull(String status);
+    List<Proposta> findByStatusAnaliseFinanceiraAndCartaoIsNull(String status);
+
+//    boolean findByIdCartao(String idCartao);
 }

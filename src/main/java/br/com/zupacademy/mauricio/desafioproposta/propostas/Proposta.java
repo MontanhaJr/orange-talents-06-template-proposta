@@ -1,5 +1,7 @@
 package br.com.zupacademy.mauricio.desafioproposta.propostas;
 
+import br.com.zupacademy.mauricio.desafioproposta.cartao.Cartao;
+import br.com.zupacademy.mauricio.desafioproposta.cartao.dto.request.CartaoRequest;
 import br.com.zupacademy.mauricio.desafioproposta.feign.solicitacaoAnalise.StatusAnaliseFinanceira;
 
 import javax.persistence.*;
@@ -24,7 +26,8 @@ public class Proposta {
     @Column(nullable = false) @Positive
     private Double salario;
     private String statusAnaliseFinanceira;
-    private String idCartao;
+    @OneToOne
+    private Cartao cartao;
 
     @Deprecated
     public Proposta() {
@@ -78,7 +81,7 @@ public class Proposta {
         this.statusAnaliseFinanceira = StatusAnaliseFinanceira.NAO_ELEGIVEL.name();
     }
 
-    public void associaCartao(String id) {
-        this.idCartao = id;
+    public void associaCartao(CartaoRequest request) {
+        this.cartao = request.toModel(this);
     }
 }
