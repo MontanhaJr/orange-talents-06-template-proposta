@@ -1,4 +1,4 @@
-package br.com.zupacademy.mauricio.desafioproposta.feign.solicitarCartao;
+package br.com.zupacademy.mauricio.desafioproposta.cartao.dto.response;
 
 public class SolicitarCartaoResponse {
     private String id, nome, documento, idProposta;

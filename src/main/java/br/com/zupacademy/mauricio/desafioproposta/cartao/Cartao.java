@@ -1,6 +1,7 @@
 package br.com.zupacademy.mauricio.desafioproposta.cartao;
 
 import br.com.zupacademy.mauricio.desafioproposta.biometrias.Biometria;
+import br.com.zupacademy.mauricio.desafioproposta.bloqueios.Bloqueio;
 import br.com.zupacademy.mauricio.desafioproposta.cartao.dto.request.CartaoRequest;
 import br.com.zupacademy.mauricio.desafioproposta.propostas.Proposta;
 
@@ -26,15 +27,29 @@ public class Cartao {
     private String titular;
     @OneToOne
     private Proposta proposta;
+    @OneToOne
+    private Bloqueio bloqueio;
+
+    private Boolean bloqueado;
 
     @Deprecated
     public Cartao() {
     }
 
-    public Cartao(String id, LocalDateTime emitidoEm, Proposta proposta, String titular) {
+    public Cartao(String id, LocalDateTime emitidoEm, Proposta proposta, String titular, Boolean bloqueado) {
         this.id = id;
         this.emitidoEm = emitidoEm;
         this.proposta = proposta;
         this.titular = titular;
+        this.bloqueado = bloqueado;
+    }
+
+    public Boolean bloqueado() {
+        return bloqueado;
+    }
+
+    public void adicionarBloqueio(Bloqueio bloqueio) {
+        this.bloqueio = bloqueio;
+        this.bloqueado = true;
     }
 }

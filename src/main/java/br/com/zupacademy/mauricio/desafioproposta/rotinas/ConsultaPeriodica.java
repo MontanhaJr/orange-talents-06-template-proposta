@@ -2,9 +2,9 @@ package br.com.zupacademy.mauricio.desafioproposta.rotinas;
 
 import br.com.zupacademy.mauricio.desafioproposta.cartao.CartaoRepository;
 import br.com.zupacademy.mauricio.desafioproposta.cartao.dto.request.CartaoRequest;
-import br.com.zupacademy.mauricio.desafioproposta.feign.solicitarCartao.SolicitarCartaoRequest;
+import br.com.zupacademy.mauricio.desafioproposta.cartao.dto.request.SolicitarCartaoRequest;
 import br.com.zupacademy.mauricio.desafioproposta.feign.solicitacaoAnalise.StatusAnaliseFinanceira;
-import br.com.zupacademy.mauricio.desafioproposta.feign.solicitarCartao.SolicitarCartaoClient;
+import br.com.zupacademy.mauricio.desafioproposta.feign.cartao.CartaoClient;
 import br.com.zupacademy.mauricio.desafioproposta.propostas.Proposta;
 import br.com.zupacademy.mauricio.desafioproposta.propostas.repository.PropostaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class ConsultaPeriodica {
     CartaoRepository cartaoRepository;
 
     @Autowired
-    SolicitarCartaoClient solicitarCartaoClient;
+    CartaoClient cartaoClient;
 
     @Scheduled(fixedDelayString = "${periodo-consulta-cartao}")
     @Transactional
@@ -32,7 +32,7 @@ public class ConsultaPeriodica {
         List<Proposta> propostasElegiveisSemCartao = propostaRepository.findByStatusAnaliseFinanceiraAndCartaoIsNull(StatusAnaliseFinanceira.ELEGIVEL.name());
 
         for (Proposta proposta:propostasElegiveisSemCartao) {
-            CartaoRequest request = solicitarCartaoClient.solicitaCartao(new SolicitarCartaoRequest(proposta.getNome(), proposta.getDocumento(), proposta.getId().toString()));
+            CartaoRequest request = cartaoClient.solicitaCartao(new SolicitarCartaoRequest(proposta.getNome(), proposta.getDocumento(), proposta.getId().toString()));
             cartaoRepository.save(request.toModel(proposta));
             proposta.associaCartao(request);
             propostaRepository.save(proposta);

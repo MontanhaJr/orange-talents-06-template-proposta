@@ -21,6 +21,6 @@ public class CartaoRequest {
     }
 
     public Cartao toModel(Proposta proposta) {
-        return new Cartao(this.id, this.emitidoEm, proposta, this.titular);
+        return new Cartao(this.id, this.emitidoEm, proposta, this.titular, false);
     }
 }
