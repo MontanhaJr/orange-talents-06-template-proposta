@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @RestController
@@ -26,6 +27,7 @@ public class BloqueioController {
     @Autowired
     CartaoClient cartaoClient;
 
+    @Transactional
     @PostMapping("/bloqueio/{idCartao}")
     public ResponseEntity<?> bloquear(@PathVariable String idCartao,
                                             HttpServletRequest request) {
