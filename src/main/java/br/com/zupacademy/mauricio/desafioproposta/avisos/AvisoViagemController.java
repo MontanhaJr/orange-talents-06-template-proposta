@@ -1,9 +1,11 @@
 package br.com.zupacademy.mauricio.desafioproposta.avisos;
 
 import br.com.zupacademy.mauricio.desafioproposta.avisos.dto.request.AvisoViagemRequest;
+import br.com.zupacademy.mauricio.desafioproposta.avisos.dto.response.AvisoViagemResponse;
 import br.com.zupacademy.mauricio.desafioproposta.avisos.repository.AvisoViagemRepository;
 import br.com.zupacademy.mauricio.desafioproposta.cartao.Cartao;
 import br.com.zupacademy.mauricio.desafioproposta.cartao.CartaoRepository;
+import br.com.zupacademy.mauricio.desafioproposta.feign.cartao.CartaoClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,9 @@ public class AvisoViagemController {
     @Autowired
     AvisoViagemRepository avisoViagemRepository;
 
+    @Autowired
+    CartaoClient cartaoClient;
+
     @PostMapping("/aviso/{idCartao}")
     public ResponseEntity<?> avisarViagem(@PathVariable String idCartao,
                                           @RequestBody @Valid AvisoViagemRequest avisoViagemRequest,
@@ -39,13 +44,17 @@ public class AvisoViagemController {
             return ResponseEntity.notFound().build();
         }
 
+        AvisoViagem avisoViagem = avisoViagemRequest.toModel(userAgent, ipCliente, cartao.get());
 
         try {
-            AvisoViagem avisoViagem = avisoViagemRequest.toModel(userAgent, ipCliente, cartao.get());
-            cartao.get().adicionarAviso(avisoViagem);
-            avisoViagemRepository.save(avisoViagem);
-            cartaoRepository.save(cartao.get());
-            return ResponseEntity.ok().build();
+            AvisoViagemResponse avisoViagemResponse = cartaoClient.avisarViagem(idCartao, avisoViagemRequest);
+            if (avisoViagemResponse.getResultado().equals("CRIADO")) {
+                avisoViagemRepository.save(avisoViagem);
+                cartao.get().adicionarAviso(avisoViagem);
+                cartaoRepository.save(cartao.get());
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

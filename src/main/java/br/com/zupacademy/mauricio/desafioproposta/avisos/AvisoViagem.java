@@ -19,7 +19,7 @@ public class AvisoViagem {
     @NotNull @NotEmpty
     private String destino;
     @NotNull @Future
-    private LocalDate dataTermino;
+    private LocalDate validoAte;
     private Instant instanteAviso = Instant.now();
     private String userAgent;
     private String ipCliente;
@@ -30,9 +30,9 @@ public class AvisoViagem {
     public AvisoViagem() {
     }
 
-    public AvisoViagem(String destino, LocalDate dataTermino, String userAgent, String ipCliente, Cartao cartao) {
+    public AvisoViagem(String destino, LocalDate validoAte, String userAgent, String ipCliente, Cartao cartao) {
         this.destino = destino;
-        this.dataTermino = dataTermino;
+        this.validoAte = validoAte;
         this.userAgent = userAgent;
         this.ipCliente = ipCliente;
         this.cartao = cartao;

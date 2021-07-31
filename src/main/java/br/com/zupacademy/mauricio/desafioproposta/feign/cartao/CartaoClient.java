@@ -1,5 +1,7 @@
 package br.com.zupacademy.mauricio.desafioproposta.feign.cartao;
 
+import br.com.zupacademy.mauricio.desafioproposta.avisos.dto.request.AvisoViagemRequest;
+import br.com.zupacademy.mauricio.desafioproposta.avisos.dto.response.AvisoViagemResponse;
 import br.com.zupacademy.mauricio.desafioproposta.bloqueios.dto.request.BloqueioCartaoRequest;
 import br.com.zupacademy.mauricio.desafioproposta.bloqueios.dto.response.BloqueioCartaoResponse;
 import br.com.zupacademy.mauricio.desafioproposta.cartao.dto.request.CartaoRequest;
@@ -17,4 +19,7 @@ public interface CartaoClient {
 
     @PostMapping(value = "/api/cartoes/{id}/bloqueios", consumes = "application/json")
     BloqueioCartaoResponse bloquearCartao(@PathVariable String id, @RequestBody BloqueioCartaoRequest request);
+
+    @PostMapping(value = "/api/cartoes/{id}/avisos", consumes = "application/json")
+    AvisoViagemResponse avisarViagem(@PathVariable String id, @RequestBody AvisoViagemRequest request);
 }
