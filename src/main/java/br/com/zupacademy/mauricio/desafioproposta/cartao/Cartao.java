@@ -1,5 +1,6 @@
 package br.com.zupacademy.mauricio.desafioproposta.cartao;
 
+import br.com.zupacademy.mauricio.desafioproposta.avisos.AvisoViagem;
 import br.com.zupacademy.mauricio.desafioproposta.biometrias.Biometria;
 import br.com.zupacademy.mauricio.desafioproposta.bloqueios.Bloqueio;
 import br.com.zupacademy.mauricio.desafioproposta.cartao.dto.request.CartaoRequest;
@@ -29,8 +30,9 @@ public class Cartao {
     private Proposta proposta;
     @OneToOne
     private Bloqueio bloqueio;
-
     private Boolean bloqueado;
+    @OneToMany(mappedBy = "cartao")
+    private Set<AvisoViagem> avisosViagem = new HashSet<>();
 
     @Deprecated
     public Cartao() {
@@ -51,5 +53,9 @@ public class Cartao {
     public void adicionarBloqueio(Bloqueio bloqueio) {
         this.bloqueio = bloqueio;
         this.bloqueado = true;
+    }
+
+    public void adicionarAviso(AvisoViagem avisosViagem) {
+        this.avisosViagem.add(avisosViagem);
     }
 }
