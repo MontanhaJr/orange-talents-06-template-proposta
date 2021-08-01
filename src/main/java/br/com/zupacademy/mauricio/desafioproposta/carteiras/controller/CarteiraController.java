@@ -66,9 +66,9 @@ public class CarteiraController {
                         .toUri())
                         .build();
             }
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 }

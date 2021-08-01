@@ -61,9 +61,9 @@ public class BloqueioController {
                 cartaoRepository.save(cartao.get());
                 return ResponseEntity.ok().build();
             }
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 }
