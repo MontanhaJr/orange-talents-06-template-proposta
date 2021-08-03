@@ -2,6 +2,8 @@ package br.com.zupacademy.mauricio.desafioproposta.propostas.dto.request;
 
 import br.com.zupacademy.mauricio.desafioproposta.propostas.Proposta;
 import br.com.zupacademy.mauricio.desafioproposta.validation.annotation.document.DocumentValidator;
+import br.com.zupacademy.mauricio.desafioproposta.validation.annotation.unique.DocumentUnique;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +17,9 @@ public class PropostaRequest {
     private String email;
     @NotNull @NotBlank
     private String nome;
-    @NotNull @NotBlank @DocumentValidator
+    @NotNull @NotBlank
+    @DocumentValidator
+    @DocumentUnique
     private String documento;
     @NotNull @NotBlank
     private String endereco;
@@ -62,7 +66,7 @@ public class PropostaRequest {
         this.salario = salario;
     }
 
-    public Proposta toModel() {
-        return new Proposta(this.email, this.nome, this.documento, this.endereco, this.salario);
+    public Proposta toModel(TextEncryptor encryptor) {
+        return new Proposta(this.email, this.nome, encryptor.encrypt(this.documento), this.endereco, this.salario);
     }
 }

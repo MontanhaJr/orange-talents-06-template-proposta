@@ -18,9 +18,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests(authorizeRequest ->
                 authorizeRequest
                         .antMatchers(HttpMethod.GET, "/propostas/**").hasAuthority("SCOPE_propostas:read")
-                        .antMatchers(HttpMethod.GET, "/api/cartoes/**").hasAuthority("SCOPE_cartoes:read")
-                        .antMatchers(HttpMethod.POST, "/api/cartoes/**").hasAuthority("SCOPE_cartoes:write")
-                        .antMatchers(HttpMethod.POST, "/api/propostas/**").hasAuthority("SCOPE_propostas:write")
+                        .antMatchers(HttpMethod.GET, "/cartoes/**").hasAuthority("SCOPE_cartoes:read")
+                        .antMatchers(HttpMethod.POST, "/cartoes/**").hasAuthority("SCOPE_cartoes:write")
+                        .antMatchers(HttpMethod.POST, "/propostas/**").hasAuthority("SCOPE_propostas:write")
+                        .antMatchers(HttpMethod.POST, "/biometria/**").hasAuthority("SCOPE_cartoes:write")
+                        .antMatchers(HttpMethod.POST, "/bloqueio/**").hasAuthority("SCOPE_cartoes:write")
+                        .antMatchers(HttpMethod.POST, "/aviso/**").hasAuthority("SCOPE_cartoes:write")
+                        .antMatchers(HttpMethod.POST, "/carteira/**").hasAuthority("SCOPE_cartoes:write")
                         .antMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
         ).oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);

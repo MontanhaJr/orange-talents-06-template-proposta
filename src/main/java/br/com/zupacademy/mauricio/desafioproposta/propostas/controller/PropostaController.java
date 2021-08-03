@@ -9,7 +9,10 @@ import br.com.zupacademy.mauricio.desafioproposta.propostas.repository.PropostaR
 import br.com.zupacademy.mauricio.desafioproposta.validation.ErroDeFormularioDto;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -27,17 +30,19 @@ public class PropostaController {
     @Autowired
     AnaliseFinanceiraClient analiseFinanceiraClient;
 
+    @Value("${criptografia.senha}")
+    private String senha;
+    @Value("${criptografia.chave}")
+    private String chave;
+
     @PostMapping("/proposta")
     @Transactional
     public ResponseEntity<?> criar(@RequestBody @Valid PropostaRequest propostaRequest, UriComponentsBuilder uriBuilder) {
-        Optional<Proposta> documentoJaCadastrado = propostaRepository.findByDocumento(propostaRequest.getDocumento());
+        TextEncryptor encryptor = Encryptors.queryableText(senha, chave);
 
-        if(documentoJaCadastrado.isPresent()) {
-            return ResponseEntity.unprocessableEntity()
-                    .body(new ErroDeFormularioDto("documento", "Já existe um cadastro de proposta para esse documento!"));
-        }
+        Optional<Proposta> documentoJaCadastrado = propostaRepository.findByDocumento(encryptor.encrypt(propostaRequest.getDocumento()));
 
-        Proposta proposta = propostaRequest.toModel();
+        Proposta proposta = propostaRequest.toModel(encryptor);
         propostaRepository.save(proposta);
 
         try {
@@ -55,9 +60,10 @@ public class PropostaController {
 
     @GetMapping("/proposta/{id}")
     public ResponseEntity<?> buscarPropostaPorId(@PathVariable Long id) {
+        TextEncryptor encryptor = Encryptors.queryableText(senha, chave);
         Optional<Proposta> proposta = propostaRepository.findById(id);
         if (proposta.isPresent()) {
-            return ResponseEntity.ok(new PropostaResponse(proposta.get()));
+            return ResponseEntity.ok(new PropostaResponse(proposta.get(), encryptor));
         }
 
         return ResponseEntity.notFound().build();
